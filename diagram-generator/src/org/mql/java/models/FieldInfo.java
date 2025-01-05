@@ -45,6 +45,10 @@ public class FieldInfo {
 		return type;
 	}
 
+	public char getModifier() {
+		return modifier;
+	}
+	
 	public boolean isCustomType() {
 		return isCustomType;
 	}

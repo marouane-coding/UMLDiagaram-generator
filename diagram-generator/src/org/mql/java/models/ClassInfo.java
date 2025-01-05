@@ -16,6 +16,9 @@ public class ClassInfo {
 	private List<FieldInfo> fields;
 	private List<MethodInfo> methods;
 	private List<RelationshipInfo> relations;
+	private List<RelationshipInfo> composedClasses; 
+    private List<RelationshipInfo> aggregatedClasses;
+    private List<InterfaceInfo> implemetedInterfaces;
 	
 	public ClassInfo(String classPath) {
 		try {
@@ -27,12 +30,16 @@ public class ClassInfo {
 			getFields(cls);	
 			getMethods(cls);
 			getRelations(fields);
+			getComposedClasses(fields);
+            getAggregatedClasses(fields);
+            getImplementedInterfaces(cls); 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	private void getExtendedClass(Class<?> cls) {
+		if (cls.getSuperclass() == null) return;
 		extendedClass = cls.getSuperclass().getName();
 		
 		if ("java.lang.Object".equals(extendedClass)) {
@@ -63,15 +70,6 @@ public class ClassInfo {
 	private void getRelations(List<FieldInfo> fields) {
 		relations = new ArrayList<RelationshipInfo>();
 		
-		for (FieldInfo field : fields) {
-			if (field.isCustomType()) {
-				Relation rel = field.getField().getAnnotation(Relation.class);
-				String from = this.name;
-				String to = field.getType();
-				relations.add(new RelationshipInfo(from, to, rel));
-			}
-		}
-		
 		// I'll handle the inheritance relation here.
 	    if (extendedClass != null) {
 	        relations.add(new RelationshipInfo(name, extendedClass, new Relation() {
@@ -87,6 +85,61 @@ public class ClassInfo {
 	        }));
 	    }
 	}
+	
+    private void getComposedClasses(List<FieldInfo> fields) {
+        composedClasses = new ArrayList<RelationshipInfo>();
+        
+        for (FieldInfo field : fields) {
+            if (field.isCustomType() && Modifier.isFinal(field.getField().getModifiers())) {
+                String from = this.name;
+                String to = field.getType();
+                RelationshipInfo relation = new RelationshipInfo(from, to, new Relation() {
+    	            @Override
+    	            public Class<? extends java.lang.annotation.Annotation> annotationType() {
+    	                return Relation.class;
+    	            }
+
+    	            @Override
+    	            public String value() {
+    	                return "Composition";
+    	            }
+                });
+                composedClasses.add(relation);
+                relations.add(relation);
+            }
+        }
+    }
+
+    private void getAggregatedClasses(List<FieldInfo> fields) {
+        aggregatedClasses = new ArrayList<>();
+        for (FieldInfo field : fields) {
+            if (field.isCustomType() && !Modifier.isFinal(field.getField().getModifiers())) {
+                String from = this.name;
+                String to = field.getType();
+                RelationshipInfo relation = new RelationshipInfo(from, to, new Relation() {
+    	            @Override
+    	            public Class<? extends java.lang.annotation.Annotation> annotationType() {
+    	                return Relation.class;
+    	            }
+
+    	            @Override
+    	            public String value() {
+    	                return "Aggregation";
+    	            }
+                });
+                aggregatedClasses.add(relation);
+                relations.add(relation);
+            }
+        }
+    }
+	
+	private void getImplementedInterfaces(Class<?> cls) {
+	    implemetedInterfaces = new ArrayList<>();
+	    for (Class<?> iface : cls.getInterfaces()) {
+	        implemetedInterfaces.add(new InterfaceInfo(iface));
+	    }
+	}
+
 
 	public String getSimpleName() {
 		return simpleName;
@@ -115,7 +168,16 @@ public class ClassInfo {
 	public List<RelationshipInfo> getRelations() {
 		return relations;
 	}
-	
-	
 
+	public List<RelationshipInfo> getComposedClasses() {
+		return composedClasses;
+	}
+
+	public List<RelationshipInfo> getAggregatedClasses() {
+		return aggregatedClasses;
+	}
+
+	public List<InterfaceInfo> getImplemetedInterfaces() {
+		return implemetedInterfaces;
+	}
 }

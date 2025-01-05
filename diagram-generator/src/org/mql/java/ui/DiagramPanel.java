@@ -20,7 +20,7 @@ public class DiagramPanel extends JPanel {
     public DiagramPanel(List<ClassInfo> classes) {
         this.classes = classes;
         this.classLocations = new HashMap<>();
-        setPreferredSize(new Dimension(1000, 800));
+        setPreferredSize(new Dimension(1000, 600));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class DiagramPanel extends JPanel {
             Point location = new Point(x, y);
             classLocations.put(cls.getName(), location);
             drawClass(g2, cls, location);
-            y += 200;
+            y += 300;
             if (y > getHeight() - 200) {
                 y = 50;
                 x += 250;

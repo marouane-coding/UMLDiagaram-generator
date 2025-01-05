@@ -2,7 +2,7 @@ package org.mql.java.examples;
 
 import org.mql.java.annotations.Relation;
 
-public class PersonWithAddress extends Person {
+public class PersonWithAddress extends Person implements Alien {
     @Relation("Composition")
     private Address address;
 

@@ -34,5 +34,22 @@ public class MethodInfo {
 	public String getRepresentation() {
 		return modifier + " " + name + params + " : " + returnType;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getReturnType() {
+		return returnType;
+	}
+
+	public String getParams() {
+		return params;
+	}
+
+	public char getModifier() {
+		return modifier;
+	}
+	
 	
 }
