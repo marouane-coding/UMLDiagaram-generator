@@ -10,6 +10,10 @@ public class FieldInfo {
 	private String simpleTypeName;
 	private char modifier;
 	private boolean isCustomType;
+	
+	public FieldInfo() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public FieldInfo(Field field) {
 		this.field = field;
@@ -52,5 +56,30 @@ public class FieldInfo {
 	public boolean isCustomType() {
 		return isCustomType;
 	}
+
+	public void setField(Field field) {
+		this.field = field;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public void setSimpleTypeName(String simpleTypeName) {
+		this.simpleTypeName = simpleTypeName;
+	}
+
+	public void setModifier(char modifier) {
+		this.modifier = modifier;
+	}
+
+	public void setCustomType(boolean isCustomType) {
+		this.isCustomType = isCustomType;
+	}
+	
 	
 }

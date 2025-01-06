@@ -29,6 +29,10 @@ public class XMLNode {
 		}
 	}
 	
+	public XMLNode firstChild() {
+		return children().get(0);
+	}
+	
 	public List<XMLNode> children() {
 		NodeList children = node.getChildNodes();
 		List<XMLNode> childrenList = new ArrayList<XMLNode>();
@@ -64,6 +68,6 @@ public class XMLNode {
 	}
  
 	public String getValue() {
-		return children().get(0).node.getNodeName();
+		return node.getChildNodes().item(0).getNodeValue();
 	}
 }

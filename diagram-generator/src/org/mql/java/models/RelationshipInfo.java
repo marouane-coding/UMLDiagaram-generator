@@ -12,6 +12,10 @@ public class RelationshipInfo {
 		this.to = to;
 		this.relation = relation.value();
 	}
+	
+	public RelationshipInfo() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public String getFrom() {
 		return from;
@@ -24,5 +28,19 @@ public class RelationshipInfo {
 	public String getRelation() {
 		return relation;
 	}
+
+	public void setFrom(String from) {
+		this.from = from;
+	}
+
+	public void setTo(String to) {
+		this.to = to;
+	}
+
+	public void setRelation(String relation) {
+		this.relation = relation;
+	}
+	
+	
 	
 }

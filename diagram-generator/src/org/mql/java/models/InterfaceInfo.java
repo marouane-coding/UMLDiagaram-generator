@@ -22,6 +22,14 @@ public class InterfaceInfo {
 		getFields(cls);	
 		getMethods(cls);
 	}
+	
+	public InterfaceInfo(String path) throws ClassNotFoundException {
+		this(Class.forName(path));
+	}
+	
+	public InterfaceInfo() {
+		// TODO Auto-generated constructor stub
+	}
 
 	private void getExtendedClass(Class<?> cls) {
 		if (cls.getSuperclass() == null) return;
@@ -76,4 +84,7 @@ public class InterfaceInfo {
 		return methods;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
 }

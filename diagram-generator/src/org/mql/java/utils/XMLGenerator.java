@@ -1,6 +1,8 @@
 package org.mql.java.utils;
 
+import org.mql.java.models.AnnotationInfo;
 import org.mql.java.models.ClassInfo;
+import org.mql.java.models.EnumInfo;
 import org.mql.java.models.FieldInfo;
 import org.mql.java.models.InterfaceInfo;
 import org.mql.java.models.MethodInfo;
@@ -16,6 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class XMLGenerator {
 
@@ -38,12 +41,22 @@ public class XMLGenerator {
         Element packageElement = doc.createElement("package");
         parentElement.appendChild(packageElement);
 
-        Element nameElement = doc.createElement("name");
-        nameElement.appendChild(doc.createTextNode(packageInfo.getName()));
-        packageElement.appendChild(nameElement);
+        packageElement.setAttribute("name", packageInfo.getName());
 
         for (ClassInfo classInfo : packageInfo.getClasses()) {
             createClassXML(classInfo, doc, packageElement);
+        }
+        
+        for (InterfaceInfo interfaceInfo : packageInfo.getInterfaces()) {
+            createInterfaceXML(interfaceInfo, doc, packageElement);
+        }
+        
+        for (EnumInfo enumInfo : packageInfo.getEnums()) {
+            createEnumXML(enumInfo, doc, packageElement);
+        }
+        
+        for (AnnotationInfo annotationInfo : packageInfo.getAnnotations()) {
+            createAnnotationXML(annotationInfo, doc, packageElement);
         }
 
         if (packageInfo.getSubPackages() != null) {
@@ -67,7 +80,7 @@ public class XMLGenerator {
         	Element implementedInterfaces = doc.createElement("implementedInterfaces");
             classElement.appendChild(implementedInterfaces);
         	for (InterfaceInfo iface : classInfo.getImplemetedInterfaces()) {
-                createInterfaceXML(iface, doc, implementedInterfaces);
+                createImplementedInterfaceXML(iface, doc, implementedInterfaces);
             }
         }
         
@@ -85,6 +98,95 @@ public class XMLGenerator {
             createMethodXML(method, doc, methodsElement);
         }
     }
+    
+    public static void createInterfaceXML(InterfaceInfo interfaceInfo, Document doc, Element parentElement) {
+        Element interfaceElement = doc.createElement("interface");
+        parentElement.appendChild(interfaceElement);
+
+        Element simpleNameElement = doc.createElement("simpleName");
+        simpleNameElement.appendChild(doc.createTextNode(interfaceInfo.getSimpleName()));
+        interfaceElement.appendChild(simpleNameElement);
+
+        Element nameElement = doc.createElement("name");
+        nameElement.appendChild(doc.createTextNode(interfaceInfo.getName()));
+        interfaceElement.appendChild(nameElement);
+
+        Element modifiersElement = doc.createElement("modifiers");
+        modifiersElement.appendChild(doc.createTextNode(interfaceInfo.getModifiers()));
+        interfaceElement.appendChild(modifiersElement);
+
+        if (interfaceInfo.getExtendedClass() != null) {
+            Element extendedClassElement = doc.createElement("extendedClass");
+            extendedClassElement.appendChild(doc.createTextNode(interfaceInfo.getExtendedClass()));
+            interfaceElement.appendChild(extendedClassElement);
+        }
+
+        Element fieldsElement = doc.createElement("fields");
+        interfaceElement.appendChild(fieldsElement);
+
+        for (FieldInfo field : interfaceInfo.getFields()) {
+            createFieldXML(field, doc, fieldsElement);
+        }
+
+        Element methodsElement = doc.createElement("methods");
+        interfaceElement.appendChild(methodsElement);
+
+        for (MethodInfo method : interfaceInfo.getMethods()) {
+            createMethodXML(method, doc, methodsElement);
+        }
+    }
+    
+    private static void createAnnotationXML(AnnotationInfo annotationInfo, Document doc, Element parentElement) {
+        Element annotationElement = doc.createElement("annotation");
+        parentElement.appendChild(annotationElement);
+
+        Element annotationNameElement = doc.createElement("name");
+        annotationNameElement.appendChild(doc.createTextNode(annotationInfo.getName()));
+        annotationElement.appendChild(annotationNameElement);
+
+        Element retentionElement = doc.createElement("retentionPolicy");
+        retentionElement.appendChild(doc.createTextNode(annotationInfo.getRetentionPolicy().toString()));
+        annotationElement.appendChild(retentionElement);
+
+        Element inheritedElement = doc.createElement("isInherited");
+        inheritedElement.appendChild(doc.createTextNode(String.valueOf(annotationInfo.isInherited())));
+        annotationElement.appendChild(inheritedElement);
+
+        Element attributesElement = doc.createElement("attributes");
+        annotationElement.appendChild(attributesElement);
+
+        for (Map.Entry<String, String> attribute : annotationInfo.getAttributes().entrySet()) {
+            Element attributeElement = doc.createElement("attribute");
+            attributesElement.appendChild(attributeElement);
+
+            Element attributeNameElement = doc.createElement("name");
+            attributeNameElement.appendChild(doc.createTextNode(attribute.getKey()));
+            attributeElement.appendChild(attributeNameElement);
+
+            Element attributeTypeElement = doc.createElement("type");
+            attributeTypeElement.appendChild(doc.createTextNode(attribute.getValue()));
+            attributeElement.appendChild(attributeTypeElement);
+        }
+    }
+
+    private static void createEnumXML(EnumInfo enumInfo, Document doc, Element parentElement) {
+        Element enumElement = doc.createElement("enum");
+        parentElement.appendChild(enumElement);
+
+        Element enumNameElement = doc.createElement("name");
+        enumNameElement.appendChild(doc.createTextNode(enumInfo.getName()));
+        enumElement.appendChild(enumNameElement);
+
+        Element fieldsElement = doc.createElement("fields");
+        enumElement.appendChild(fieldsElement);
+
+        for (String field : enumInfo.getFields()) {
+            Element fieldElement = doc.createElement("field");
+            fieldElement.appendChild(doc.createTextNode(field));
+            fieldsElement.appendChild(fieldElement);
+        }
+    }
+
 
     private static void createRelationshipsXML(ClassInfo classInfo, Document doc, Element parentElement) {
         Element relationsElement = doc.createElement("relationships");
@@ -111,7 +213,7 @@ public class XMLGenerator {
         }
     }
     
-    private static void createInterfaceXML(InterfaceInfo iface, Document doc, Element parentElement) {
+    private static void createImplementedInterfaceXML(InterfaceInfo iface, Document doc, Element parentElement) {
     	Element interfaceElement = doc.createElement("interface");
         parentElement.appendChild(interfaceElement);
 

@@ -9,6 +9,7 @@ import org.mql.java.models.PackageInfo;
 import org.mql.java.ui.DiagramPanel;
 import org.mql.java.utils.PackageScanner;
 import org.mql.java.utils.XMLGenerator;
+import org.mql.java.utils.XMLParser;
 import org.w3c.dom.Document;
 
 public class UMLDiagramApp {
@@ -44,6 +45,9 @@ public class UMLDiagramApp {
             Document xmlDocument = XMLGenerator.generateXML(rootPackage);
 
             XMLGenerator.printXML(xmlDocument);
+            
+            PackageInfo mypkg = new XMLParser("resources/generatedXML/java.xml").parse();
+            System.out.println(mypkg);
 
         } catch (Exception e) {
             e.printStackTrace();

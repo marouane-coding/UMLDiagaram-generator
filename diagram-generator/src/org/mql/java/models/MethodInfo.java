@@ -11,6 +11,10 @@ public class MethodInfo {
 	private String params;
 	private char modifier;
 	
+	public MethodInfo() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public MethodInfo(Method method) {
 		name = method.getName();
 		returnType = method.getReturnType().getSimpleName();
@@ -49,6 +53,22 @@ public class MethodInfo {
 
 	public char getModifier() {
 		return modifier;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setReturnType(String returnType) {
+		this.returnType = returnType;
+	}
+
+	public void setParams(String params) {
+		this.params = params;
+	}
+
+	public void setModifier(char modifier) {
+		this.modifier = modifier;
 	}
 	
 	

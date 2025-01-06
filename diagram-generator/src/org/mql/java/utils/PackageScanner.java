@@ -1,7 +1,9 @@
 package org.mql.java.utils;
 
-import org.mql.java.annotations.Relation;
+import org.mql.java.models.AnnotationInfo;
 import org.mql.java.models.ClassInfo;
+import org.mql.java.models.EnumInfo;
+import org.mql.java.models.InterfaceInfo;
 import org.mql.java.models.PackageInfo;
 
 import java.io.File;
@@ -12,8 +14,7 @@ import java.util.Map;
 
 public class PackageScanner {
     private String packageName;
-    private XMLGenerator generator;
-
+    
     public PackageScanner(String packageName) {
         this.packageName = packageName;
     }
@@ -89,6 +90,9 @@ public class PackageScanner {
         if (directory.exists() && directory.isDirectory()) {
             PackageInfo packageInfo = new PackageInfo(packageName);
             List<ClassInfo> classes = new ArrayList<>();
+            List<InterfaceInfo> interfaces = new ArrayList<>();
+            List<AnnotationInfo> annotations = new ArrayList<>();
+            List<EnumInfo> enums = new ArrayList<>();
             List<PackageInfo> subPackages = new ArrayList<>();
 
             for (File file : directory.listFiles()) {
@@ -97,12 +101,27 @@ public class PackageScanner {
                     subPackages.add(scanPackage(subPackageName));
                 } else if (file.getName().endsWith(".java")) {
                     String className = packageName + "." + file.getName().replace(".java", "");
-                    classes.add(new ClassInfo(className));
+                    if ("class".equals(classType(className))) {
+                        classes.add(new ClassInfo(className));
+                    } else if ("interface".equals(classType(className))) {
+                    	try {
+							interfaces.add(new InterfaceInfo(className));
+						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
+						}
+                    } else if ("enum".equals(classType(className))) {
+                    	enums.add(new EnumInfo(className));
+                    } else if ("annotation".equals(classType(className))) {
+                    	annotations.add(new AnnotationInfo(className));
+                    }
                 }
             }
 
             packageInfo.setClasses(classes);
+            packageInfo.setInterfaces(interfaces);
             packageInfo.setSubPackages(subPackages);
+            packageInfo.setAnnotations(annotations);
+            packageInfo.setEnums(enums);
 
             return packageInfo;
         }
@@ -113,4 +132,19 @@ public class PackageScanner {
     public PackageInfo scan() {
         return scanPackage(packageName);
     }
+    
+    public String classType(String className) {
+    	Class<?> cls;
+		try {
+			cls = Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		if (cls.isEnum()) return "enum";
+		else if (cls.isInterface()) return "interface";
+		else if (cls.isAnnotation()) return "annotation";
+		else return "class";
+	}
 }

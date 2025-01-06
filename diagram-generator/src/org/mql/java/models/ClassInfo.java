@@ -20,6 +20,10 @@ public class ClassInfo {
     private List<RelationshipInfo> aggregatedClasses;
     private List<InterfaceInfo> implemetedInterfaces;
 	
+    public ClassInfo() {
+		// TODO Auto-generated constructor stub
+	}
+    
 	public ClassInfo(String classPath) {
 		try {
 			Class<?> cls = Class.forName(classPath);
@@ -180,4 +184,46 @@ public class ClassInfo {
 	public List<InterfaceInfo> getImplemetedInterfaces() {
 		return implemetedInterfaces;
 	}
+
+	public void setSimpleName(String simpleName) {
+		this.simpleName = simpleName;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setModifiers(String modifiers) {
+		this.modifiers = modifiers;
+	}
+
+	public void setExtendedClass(String extendedClass) {
+		this.extendedClass = extendedClass;
+	}
+
+	public void setFields(List<FieldInfo> fields) {
+		this.fields = fields;
+	}
+
+	public void setMethods(List<MethodInfo> methods) {
+		this.methods = methods;
+	}
+
+	public void setRelations(List<RelationshipInfo> relations) {
+		this.relations = relations;
+	}
+
+	public void setComposedClasses(List<RelationshipInfo> composedClasses) {
+		this.composedClasses = composedClasses;
+	}
+
+	public void setAggregatedClasses(List<RelationshipInfo> aggregatedClasses) {
+		this.aggregatedClasses = aggregatedClasses;
+	}
+
+	public void setImplemetedInterfaces(List<InterfaceInfo> implemetedInterfaces) {
+		this.implemetedInterfaces = implemetedInterfaces;
+	}
+	
+	
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <package>
-    <package>
-        <name>java</name>
+    <package name="java">
         <class>
             <name>org.mql.java.UMLDiagramApp</name>
             <relationships/>
@@ -13,25 +12,22 @@
                     <modifier>+</modifier>
                 </method>
                 <method>
-                    <name>lambda$1</name>
+                    <name>lambda$0</name>
                     <returnType>void</returnType>
                     <modifier>-</modifier>
                 </method>
                 <method>
-                    <name>lambda$0</name>
+                    <name>lambda$1</name>
                     <returnType>void</returnType>
                     <modifier>-</modifier>
                 </method>
             </methods>
         </class>
-        <package>
-            <name>annotations</name>
-            <class>
+        <package name="annotations">
+            <interface>
+                <simpleName>Relation</simpleName>
                 <name>org.mql.java.annotations.Relation</name>
-                <relationships/>
-                <implementedInterfaces>
-                    <interface name="Annotation"/>
-                </implementedInterfaces>
+                <modifiers>public abstract interface</modifiers>
                 <fields/>
                 <methods>
                     <method>
@@ -40,10 +36,9 @@
                         <modifier>+</modifier>
                     </method>
                 </methods>
-            </class>
+            </interface>
         </package>
-        <package>
-            <name>examples</name>
+        <package name="examples">
             <class>
                 <name>org.mql.java.examples.Address</name>
                 <relationships/>
@@ -71,12 +66,12 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>getStreet</name>
+                        <name>getCity</name>
                         <returnType>String</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>getCity</name>
+                        <name>getStreet</name>
                         <returnType>String</returnType>
                         <modifier>+</modifier>
                     </method>
@@ -88,15 +83,8 @@
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.examples.Alien</name>
-                <relationships/>
-                <fields/>
-                <methods/>
-            </class>
-            <class>
                 <name>org.mql.java.examples.Department</name>
                 <relationships>
-                    <composition from="org.mql.java.examples.Department" to="org.mql.java.examples.Person"/>
                     <aggregation from="org.mql.java.examples.Department" to="org.mql.java.examples.Employee"/>
                 </relationships>
                 <fields>
@@ -110,21 +98,16 @@
                         <type>org.mql.java.examples.Employee</type>
                         <modifier>-</modifier>
                     </field>
-                    <field>
-                        <name>p</name>
-                        <type>org.mql.java.examples.Person</type>
-                        <modifier>-</modifier>
-                    </field>
                 </fields>
                 <methods>
                     <method>
-                        <name>getDepartmentName</name>
-                        <returnType>String</returnType>
+                        <name>getEmployee</name>
+                        <returnType>Employee</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>getEmployee</name>
-                        <returnType>Employee</returnType>
+                        <name>getDepartmentName</name>
+                        <returnType>String</returnType>
                         <modifier>+</modifier>
                     </method>
                 </methods>
@@ -192,6 +175,7 @@
                 <relationships>
                     <parent>org.mql.java.examples.Person</parent>
                     <aggregation from="org.mql.java.examples.PersonWithAddress" to="org.mql.java.examples.Address"/>
+                    <aggregation from="org.mql.java.examples.PersonWithAddress" to="org.mql.java.examples.Gender"/>
                 </relationships>
                 <implementedInterfaces>
                     <interface name="Alien"/>
@@ -200,6 +184,11 @@
                     <field>
                         <name>address</name>
                         <type>org.mql.java.examples.Address</type>
+                        <modifier>-</modifier>
+                    </field>
+                    <field>
+                        <name>gender</name>
+                        <type>org.mql.java.examples.Gender</type>
                         <modifier>-</modifier>
                     </field>
                 </fields>
@@ -211,9 +200,75 @@
                     </method>
                 </methods>
             </class>
+            <interface>
+                <simpleName>Alien</simpleName>
+                <name>org.mql.java.examples.Alien</name>
+                <modifiers>public abstract interface</modifiers>
+                <fields/>
+                <methods/>
+            </interface>
+            <enum>
+                <name>org.mql.java.examples.Gender</name>
+                <fields>
+                    <field>MALE</field>
+                    <field>FEMALE</field>
+                </fields>
+            </enum>
         </package>
-        <package>
-            <name>models</name>
+        <package name="models">
+            <class>
+                <name>org.mql.java.models.AnnotationInfo</name>
+                <relationships/>
+                <fields>
+                    <field>
+                        <name>name</name>
+                        <type>java.lang.String</type>
+                        <modifier>-</modifier>
+                    </field>
+                    <field>
+                        <name>retentionPolicy</name>
+                        <type>java.lang.annotation.RetentionPolicy</type>
+                        <modifier>-</modifier>
+                    </field>
+                    <field>
+                        <name>isInherited</name>
+                        <type>boolean</type>
+                        <modifier>-</modifier>
+                    </field>
+                    <field>
+                        <name>attributes</name>
+                        <type>java.util.Map</type>
+                        <modifier>-</modifier>
+                    </field>
+                </fields>
+                <methods>
+                    <method>
+                        <name>getName</name>
+                        <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>toString</name>
+                        <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>isInherited</name>
+                        <returnType>boolean</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getAttributes</name>
+                        <returnType>Map</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getRetentionPolicy</name>
+                        <returnType>RetentionPolicy</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                </methods>
+            </class>
             <class>
                 <name>org.mql.java.models.ClassInfo</name>
                 <relationships/>
@@ -311,14 +366,29 @@
                         <modifier>-</modifier>
                     </method>
                     <method>
-                        <name>getComposedClasses</name>
+                        <name>setName</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setModifiers</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getRelations</name>
+                        <returnType>List</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getRelations</name>
                         <returnType>void</returnType>
                         <modifier>-</modifier>
                     </method>
                     <method>
-                        <name>getComposedClasses</name>
-                        <returnType>List</returnType>
-                        <modifier>+</modifier>
+                        <name>getExtendedClass</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
                     </method>
                     <method>
                         <name>getExtendedClass</name>
@@ -326,19 +396,44 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>getExtendedClass</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
-                        <name>getRelations</name>
+                        <name>getComposedClasses</name>
                         <returnType>List</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>getRelations</name>
+                        <name>getComposedClasses</name>
                         <returnType>void</returnType>
                         <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>setSimpleName</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setExtendedClass</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setRelations</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setComposedClasses</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setFields</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setMethods</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
                     </method>
                     <method>
                         <name>getImplementedInterfaces</name>
@@ -347,17 +442,80 @@
                     </method>
                     <method>
                         <name>getAggregatedClasses</name>
-                        <returnType>List</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>getAggregatedClasses</name>
                         <returnType>void</returnType>
                         <modifier>-</modifier>
                     </method>
                     <method>
+                        <name>getAggregatedClasses</name>
+                        <returnType>List</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setImplemetedInterfaces</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
                         <name>getImplemetedInterfaces</name>
                         <returnType>List</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setAggregatedClasses</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                </methods>
+            </class>
+            <class>
+                <name>org.mql.java.models.EnumInfo</name>
+                <relationships/>
+                <fields>
+                    <field>
+                        <name>name</name>
+                        <type>java.lang.String</type>
+                        <modifier>-</modifier>
+                    </field>
+                    <field>
+                        <name>simpleName</name>
+                        <type>java.lang.String</type>
+                        <modifier>-</modifier>
+                    </field>
+                    <field>
+                        <name>fields</name>
+                        <type>java.util.List</type>
+                        <modifier>-</modifier>
+                    </field>
+                </fields>
+                <methods>
+                    <method>
+                        <name>getName</name>
+                        <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getSimpleName</name>
+                        <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getFields</name>
+                        <returnType>List</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setName</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setSimpleName</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setFields</name>
+                        <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
                 </methods>
@@ -409,8 +567,23 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
+                        <name>setName</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
                         <name>getType</name>
                         <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getRepresentation</name>
+                        <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setModifier</name>
+                        <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
@@ -419,18 +592,33 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>decodeModifier</name>
-                        <returnType>char</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
                         <name>getModifier</name>
                         <returnType>char</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>getRepresentation</name>
-                        <returnType>String</returnType>
+                        <name>setCustomType</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>decodeModifier</name>
+                        <returnType>char</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>setSimpleTypeName</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setType</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setField</name>
+                        <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
                 </methods>
@@ -503,13 +691,18 @@
                     </method>
                     <method>
                         <name>getMethods</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>getMethods</name>
                         <returnType>List</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>getMethods</name>
+                        <name>setName</name>
                         <returnType>void</returnType>
-                        <modifier>-</modifier>
+                        <modifier>+</modifier>
                     </method>
                     <method>
                         <name>getExtendedClass</name>
@@ -560,13 +753,8 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>decodeModifier</name>
-                        <returnType>char</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
-                        <name>getModifier</name>
-                        <returnType>char</returnType>
+                        <name>setName</name>
+                        <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
@@ -575,8 +763,33 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
+                        <name>setModifier</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setReturnType</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getModifier</name>
+                        <returnType>char</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>decodeModifier</name>
+                        <returnType>char</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
                         <name>getParams</name>
                         <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setParams</name>
+                        <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
                 </methods>
@@ -600,6 +813,21 @@
                         <type>java.util.List</type>
                         <modifier>-</modifier>
                     </field>
+                    <field>
+                        <name>interfaces</name>
+                        <type>java.util.List</type>
+                        <modifier>-</modifier>
+                    </field>
+                    <field>
+                        <name>annotations</name>
+                        <type>java.util.List</type>
+                        <modifier>-</modifier>
+                    </field>
+                    <field>
+                        <name>enums</name>
+                        <type>java.util.List</type>
+                        <modifier>-</modifier>
+                    </field>
                 </fields>
                 <methods>
                     <method>
@@ -613,7 +841,17 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
+                        <name>getInterfaces</name>
+                        <returnType>List</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
                         <name>getClasses</name>
+                        <returnType>List</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getAnnotations</name>
                         <returnType>List</returnType>
                         <modifier>+</modifier>
                     </method>
@@ -623,12 +861,32 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
+                        <name>setInterfaces</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
                         <name>getSubPackages</name>
                         <returnType>List</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
+                        <name>setAnnotations</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
                         <name>setSubPackages</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getEnums</name>
+                        <returnType>List</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setEnums</name>
                         <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
@@ -666,6 +924,11 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
+                        <name>setRelation</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
                         <name>getFrom</name>
                         <returnType>String</returnType>
                         <modifier>+</modifier>
@@ -675,11 +938,20 @@
                         <returnType>String</returnType>
                         <modifier>+</modifier>
                     </method>
+                    <method>
+                        <name>setTo</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setFrom</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
                 </methods>
             </class>
         </package>
-        <package>
-            <name>ui</name>
+        <package name="ui">
             <class>
                 <name>org.mql.java.ui.DiagramPanel</name>
                 <relationships>
@@ -709,6 +981,16 @@
                         <modifier>#</modifier>
                     </method>
                     <method>
+                        <name>drawMethods</name>
+                        <returnType>int</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>drawRelationLine</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
                         <name>drawDiamond</name>
                         <returnType>void</returnType>
                         <modifier>-</modifier>
@@ -719,13 +1001,8 @@
                         <modifier>-</modifier>
                     </method>
                     <method>
-                        <name>drawMethods</name>
+                        <name>drawFields</name>
                         <returnType>int</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
-                        <name>drawRelationLine</name>
-                        <returnType>void</returnType>
                         <modifier>-</modifier>
                     </method>
                     <method>
@@ -738,30 +1015,17 @@
                         <returnType>void</returnType>
                         <modifier>-</modifier>
                     </method>
-                    <method>
-                        <name>drawFields</name>
-                        <returnType>int</returnType>
-                        <modifier>-</modifier>
-                    </method>
                 </methods>
             </class>
         </package>
-        <package>
-            <name>utils</name>
+        <package name="utils">
             <class>
                 <name>org.mql.java.utils.PackageScanner</name>
-                <relationships>
-                    <aggregation from="org.mql.java.utils.PackageScanner" to="org.mql.java.utils.XMLGenerator"/>
-                </relationships>
+                <relationships/>
                 <fields>
                     <field>
                         <name>packageName</name>
                         <type>java.lang.String</type>
-                        <modifier>-</modifier>
-                    </field>
-                    <field>
-                        <name>generator</name>
-                        <type>org.mql.java.utils.XMLGenerator</type>
                         <modifier>-</modifier>
                     </field>
                 </fields>
@@ -772,28 +1036,13 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>getClassesRecursively</name>
-                        <returnType>List</returnType>
+                        <name>mapClassesToPackages</name>
+                        <returnType>Map</returnType>
                         <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>mapDirectoryRecursively</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
                     </method>
                     <method>
                         <name>scan</name>
                         <returnType>PackageInfo</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>scanDirectoryRecursively</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
-                        <name>mapClassesToPackages</name>
-                        <returnType>Map</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
@@ -805,6 +1054,26 @@
                         <name>lambda$0</name>
                         <returnType>List</returnType>
                         <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>classType</name>
+                        <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>scanDirectoryRecursively</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>mapDirectoryRecursively</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>getClassesRecursively</name>
+                        <returnType>List</returnType>
+                        <modifier>+</modifier>
                     </method>
                 </methods>
             </class>
@@ -819,22 +1088,7 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>printXML</name>
-                        <returnType>void</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>createRelationshipsXML</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
-                        <name>createInterfaceXML</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
-                        <name>createFieldXML</name>
+                        <name>createClassXML</name>
                         <returnType>void</returnType>
                         <modifier>-</modifier>
                     </method>
@@ -844,17 +1098,47 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>createClassXML</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
                         <name>createPackageXML</name>
                         <returnType>void</returnType>
                         <modifier>-</modifier>
                     </method>
                     <method>
+                        <name>createInterfaceXML</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>createEnumXML</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>createFieldXML</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
                         <name>createMethodXML</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>printXML</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>createImplementedInterfaceXML</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>createAnnotationXML</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>createRelationshipsXML</name>
                         <returnType>void</returnType>
                         <modifier>-</modifier>
                     </method>
@@ -873,6 +1157,11 @@
                     </field>
                 </fields>
                 <methods>
+                    <method>
+                        <name>child</name>
+                        <returnType>XMLNode</returnType>
+                        <modifier>+</modifier>
+                    </method>
                     <method>
                         <name>getName</name>
                         <returnType>String</returnType>
@@ -894,14 +1183,44 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
+                        <name>firstChild</name>
+                        <returnType>XMLNode</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
                         <name>getIntAttribute</name>
                         <returnType>int</returnType>
                         <modifier>+</modifier>
                     </method>
+                </methods>
+            </class>
+            <class>
+                <name>org.mql.java.utils.XMLParser</name>
+                <relationships>
+                    <aggregation from="org.mql.java.utils.XMLParser" to="org.mql.java.utils.XMLNode"/>
+                </relationships>
+                <fields>
+                    <field>
+                        <name>xmlNode</name>
+                        <type>org.mql.java.utils.XMLNode</type>
+                        <modifier>-</modifier>
+                    </field>
+                </fields>
+                <methods>
                     <method>
-                        <name>child</name>
-                        <returnType>XMLNode</returnType>
+                        <name>parse</name>
+                        <returnType>PackageInfo</returnType>
                         <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>parseRecursively</name>
+                        <returnType>PackageInfo</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>generateClass</name>
+                        <returnType>ClassInfo</returnType>
+                        <modifier>-</modifier>
                     </method>
                 </methods>
             </class>

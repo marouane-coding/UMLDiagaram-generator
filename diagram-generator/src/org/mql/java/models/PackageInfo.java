@@ -6,6 +6,13 @@ public class PackageInfo {
 	private String name;
 	private List<PackageInfo> subPackages;
 	private List<ClassInfo> classes;
+	private List<InterfaceInfo> interfaces;
+	private List<AnnotationInfo> annotations;
+	private List<EnumInfo> enums;
+	
+	public PackageInfo() {
+		
+	}
 
 	public PackageInfo(String path) {
 		String[] pathParts = path.split("\\.");
@@ -34,6 +41,30 @@ public class PackageInfo {
 
 	public void setClasses(List<ClassInfo> classes) {
 		this.classes = classes;
+	}
+
+	public List<InterfaceInfo> getInterfaces() {
+		return interfaces;
+	}
+
+	public void setInterfaces(List<InterfaceInfo> interfaces) {
+		this.interfaces = interfaces;
+	}
+
+	public List<AnnotationInfo> getAnnotations() {
+		return annotations;
+	}
+
+	public void setAnnotations(List<AnnotationInfo> annotations) {
+		this.annotations = annotations;
+	}
+
+	public List<EnumInfo> getEnums() {
+		return enums;
+	}
+
+	public void setEnums(List<EnumInfo> enums) {
+		this.enums = enums;
 	}
 
 	@Override
