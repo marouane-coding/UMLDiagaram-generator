@@ -1,6 +1,11 @@
 package org.mql.java;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +32,23 @@ public class UMLDiagramApp {
             Map<String, List<ClassInfo>> map = scanner.mapClassesToPackages();
             
             JPanel parentPanel = new JPanel();
-            parentPanel.setLayout(new BoxLayout(parentPanel, BoxLayout.Y_AXIS));
-            
+            //Currently : 2 columns, unlimited rows, gaps of 20px
+            //Could be updated later
+            parentPanel.setLayout(new GridLayout(0, 2, 200, 200));
+
             map.forEach((name, classes) -> {
-                DiagramPanel diagramPanel = new DiagramPanel(classes);
-                parentPanel.add(diagramPanel); 
+                DiagramPanel diagramPanel = new DiagramPanel(name, classes);
+
+                // Add a compound border: LineBorder + Margin
+                diagramPanel.setBorder(BorderFactory.createCompoundBorder(
+                    new LineBorder(Color.BLACK, 2), // Black border
+                    new EmptyBorder(10, 10, 10, 10) // Margin inside the border
+                ));
+
+                parentPanel.add(diagramPanel);
             });
+
+
             
             JScrollPane scrollPane = new JScrollPane(parentPanel);
             frame.add(scrollPane);

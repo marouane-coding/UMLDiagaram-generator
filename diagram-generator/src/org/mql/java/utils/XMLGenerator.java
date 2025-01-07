@@ -27,7 +27,7 @@ public class XMLGenerator {
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.newDocument();
 
-        Element rootElement = doc.createElement("package");
+        Element rootElement = doc.createElement("project");
         doc.appendChild(rootElement);
 
         createPackageXML(rootPackage, doc, rootElement);
@@ -71,7 +71,7 @@ public class XMLGenerator {
         parentElement.appendChild(classElement);
 
         Element classNameElement = doc.createElement("name");
-        classNameElement.appendChild(doc.createTextNode(classInfo.getName()));
+        classNameElement.appendChild(doc.createTextNode(classInfo.getSimpleName()));
         classElement.appendChild(classNameElement);
 
         createRelationshipsXML(classInfo, doc, classElement);
@@ -198,17 +198,27 @@ public class XMLGenerator {
             relationsElement.appendChild(inheritanceElement);
         }
 
+        for (RelationshipInfo usedClasse : classInfo.getUsedClasses()) {
+            Element usedElement = doc.createElement("uses");
+            usedElement.setAttribute("from", usedClasse.getSimpleFrom());
+            usedElement.setAttribute("to", usedClasse.getSimpleTo());
+//            usedElement.setAttribute("maxOccurs", usedClasse.getMaxOccurs());
+            relationsElement.appendChild(usedElement);
+        }
+        
         for (RelationshipInfo composedClass : classInfo.getComposedClasses()) {
             Element compositionElement = doc.createElement("composition");
-            compositionElement.setAttribute("from", composedClass.getFrom());
-            compositionElement.setAttribute("to", composedClass.getTo());
+            compositionElement.setAttribute("from", composedClass.getSimpleFrom());
+            compositionElement.setAttribute("to", composedClass.getSimpleTo());
+            compositionElement.setAttribute("maxOccurs", composedClass.getMaxOccurs());
             relationsElement.appendChild(compositionElement);
         }
 
         for (RelationshipInfo aggregatedClass : classInfo.getAggregatedClasses()) {
             Element aggregationElement = doc.createElement("aggregation");
-            aggregationElement.setAttribute("from", aggregatedClass.getFrom());
-            aggregationElement.setAttribute("to", aggregatedClass.getTo());
+            aggregationElement.setAttribute("from", aggregatedClass.getSimpleFrom());
+            aggregationElement.setAttribute("to", aggregatedClass.getSimpleTo());
+            aggregationElement.setAttribute("maxOccurs", aggregatedClass.getMaxOccurs());
             relationsElement.appendChild(aggregationElement);
         }
     }

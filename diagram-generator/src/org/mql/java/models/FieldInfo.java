@@ -2,6 +2,9 @@ package org.mql.java.models;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.List;
 
 public class FieldInfo {
 	private Field field;
@@ -10,19 +13,36 @@ public class FieldInfo {
 	private String simpleTypeName;
 	private char modifier;
 	private boolean isCustomType;
+	private boolean isList;
 	
 	public FieldInfo() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public FieldInfo(Field field) {
-		this.field = field;
-		name = field.getName();
-		type = field.getType().getName();
-		simpleTypeName = field.getType().getSimpleName();
-		modifier = decodeModifier(field.getModifiers());
-		isCustomType = !field.getType().isPrimitive() && !field.getType().getName().startsWith("java");
+	    this.field = field;
+	    name = field.getName();
+	    type = field.getType().getName();
+	    simpleTypeName = field.getType().getSimpleName();
+	    modifier = decodeModifier(field.getModifiers());
+
+	    if (List.class.isAssignableFrom(field.getType())) {
+	        Type genericType = field.getGenericType();
+	        if (genericType instanceof ParameterizedType) {
+	            ParameterizedType parameterizedType = (ParameterizedType) genericType;
+	            Type[] typeArguments = parameterizedType.getActualTypeArguments();
+	            if (typeArguments.length > 0) {
+	                type = typeArguments[0].getTypeName();
+	            }
+	        }
+	        isCustomType = true;
+	        isList = true;
+	    } else {
+	        isCustomType = !field.getType().isPrimitive() && !field.getType().getName().startsWith("java");
+	        isList = false;
+	    }
 	}
+
 	
 	private char decodeModifier(int modifier) {
 	    String modifiers = Modifier.toString(modifier);
@@ -81,5 +101,8 @@ public class FieldInfo {
 		this.isCustomType = isCustomType;
 	}
 	
+	public boolean isList() {
+		return isList;
+	}
 	
 }

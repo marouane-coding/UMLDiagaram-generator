@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<package>
+<project>
     <package name="java">
         <class>
-            <name>org.mql.java.UMLDiagramApp</name>
-            <relationships/>
+            <name>UMLDiagramApp</name>
+            <relationships>
+                <uses from="UMLDiagramApp" to="String;"/>
+                <uses from="UMLDiagramApp" to="JPanel"/>
+                <uses from="UMLDiagramApp" to="List"/>
+            </relationships>
             <fields/>
             <methods>
                 <method>
@@ -40,7 +44,7 @@
         </package>
         <package name="examples">
             <class>
-                <name>org.mql.java.examples.Address</name>
+                <name>Address</name>
                 <relationships/>
                 <fields>
                     <field>
@@ -61,17 +65,17 @@
                 </fields>
                 <methods>
                     <method>
+                        <name>getStreet</name>
+                        <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
                         <name>setStreet</name>
                         <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
                         <name>getCity</name>
-                        <returnType>String</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>getStreet</name>
                         <returnType>String</returnType>
                         <modifier>+</modifier>
                     </method>
@@ -83,9 +87,9 @@
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.examples.Department</name>
+                <name>Department</name>
                 <relationships>
-                    <aggregation from="org.mql.java.examples.Department" to="org.mql.java.examples.Employee"/>
+                    <aggregation from="Department" maxOccurs="1" to="Employee"/>
                 </relationships>
                 <fields>
                     <field>
@@ -113,9 +117,10 @@
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.examples.Employee</name>
+                <name>Employee</name>
                 <relationships>
                     <parent>org.mql.java.examples.Person</parent>
+                    <composition from="Employee" maxOccurs="1" to="Gender"/>
                 </relationships>
                 <fields>
                     <field>
@@ -128,22 +133,27 @@
                         <type>double</type>
                         <modifier>-</modifier>
                     </field>
+                    <field>
+                        <name>gender</name>
+                        <type>org.mql.java.examples.Gender</type>
+                        <modifier>-</modifier>
+                    </field>
                 </fields>
                 <methods>
-                    <method>
-                        <name>getJobTitle</name>
-                        <returnType>String</returnType>
-                        <modifier>+</modifier>
-                    </method>
                     <method>
                         <name>getSalary</name>
                         <returnType>double</returnType>
                         <modifier>+</modifier>
                     </method>
+                    <method>
+                        <name>getJobTitle</name>
+                        <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.examples.Person</name>
+                <name>Person</name>
                 <relationships/>
                 <fields>
                     <field>
@@ -171,11 +181,11 @@
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.examples.PersonWithAddress</name>
+                <name>PersonWithAddress</name>
                 <relationships>
                     <parent>org.mql.java.examples.Person</parent>
-                    <aggregation from="org.mql.java.examples.PersonWithAddress" to="org.mql.java.examples.Address"/>
-                    <aggregation from="org.mql.java.examples.PersonWithAddress" to="org.mql.java.examples.Gender"/>
+                    <composition from="PersonWithAddress" maxOccurs="1" to="Gender"/>
+                    <aggregation from="PersonWithAddress" maxOccurs="1" to="Address"/>
                 </relationships>
                 <implementedInterfaces>
                     <interface name="Alien"/>
@@ -204,20 +214,44 @@
                 <simpleName>Alien</simpleName>
                 <name>org.mql.java.examples.Alien</name>
                 <modifiers>public abstract interface</modifiers>
-                <fields/>
-                <methods/>
+                <fields>
+                    <field>
+                        <name>AGE</name>
+                        <type>int</type>
+                        <modifier>+</modifier>
+                    </field>
+                    <field>
+                        <name>X</name>
+                        <type>int</type>
+                        <modifier>+</modifier>
+                    </field>
+                    <field>
+                        <name>Y</name>
+                        <type>int</type>
+                        <modifier>+</modifier>
+                    </field>
+                    <field>
+                        <name>Z</name>
+                        <type>int</type>
+                        <modifier>+</modifier>
+                    </field>
+                </fields>
+                <methods>
+                    <method>
+                        <name>print</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                </methods>
             </interface>
             <enum>
                 <name>org.mql.java.examples.Gender</name>
-                <fields>
-                    <field>MALE</field>
-                    <field>FEMALE</field>
-                </fields>
+                <fields/>
             </enum>
         </package>
         <package name="models">
             <class>
-                <name>org.mql.java.models.AnnotationInfo</name>
+                <name>AnnotationInfo</name>
                 <relationships/>
                 <fields>
                     <field>
@@ -270,8 +304,17 @@
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.models.ClassInfo</name>
-                <relationships/>
+                <name>ClassInfo</name>
+                <relationships>
+                    <uses from="ClassInfo" to="List"/>
+                    <aggregation from="ClassInfo" maxOccurs="*" to="FieldInfo"/>
+                    <aggregation from="ClassInfo" maxOccurs="*" to="MethodInfo"/>
+                    <aggregation from="ClassInfo" maxOccurs="*" to="RelationshipInfo"/>
+                    <aggregation from="ClassInfo" maxOccurs="*" to="RelationshipInfo"/>
+                    <aggregation from="ClassInfo" maxOccurs="*" to="RelationshipInfo"/>
+                    <aggregation from="ClassInfo" maxOccurs="*" to="RelationshipInfo"/>
+                    <aggregation from="ClassInfo" maxOccurs="*" to="InterfaceInfo"/>
+                </relationships>
                 <fields>
                     <field>
                         <name>simpleName</name>
@@ -295,32 +338,37 @@
                     </field>
                     <field>
                         <name>fields</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.FieldInfo</type>
                         <modifier>-</modifier>
                     </field>
                     <field>
                         <name>methods</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.MethodInfo</type>
                         <modifier>-</modifier>
                     </field>
                     <field>
                         <name>relations</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.RelationshipInfo</type>
+                        <modifier>-</modifier>
+                    </field>
+                    <field>
+                        <name>usedClasses</name>
+                        <type>org.mql.java.models.RelationshipInfo</type>
                         <modifier>-</modifier>
                     </field>
                     <field>
                         <name>composedClasses</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.RelationshipInfo</type>
                         <modifier>-</modifier>
                     </field>
                     <field>
                         <name>aggregatedClasses</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.RelationshipInfo</type>
                         <modifier>-</modifier>
                     </field>
                     <field>
                         <name>implemetedInterfaces</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.InterfaceInfo</type>
                         <modifier>-</modifier>
                     </field>
                 </fields>
@@ -332,13 +380,13 @@
                     </method>
                     <method>
                         <name>getModifiers</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
+                        <returnType>String</returnType>
+                        <modifier>+</modifier>
                     </method>
                     <method>
                         <name>getModifiers</name>
-                        <returnType>String</returnType>
-                        <modifier>+</modifier>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
                     </method>
                     <method>
                         <name>getSimpleName</name>
@@ -347,13 +395,13 @@
                     </method>
                     <method>
                         <name>getFields</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
+                        <returnType>List</returnType>
+                        <modifier>+</modifier>
                     </method>
                     <method>
                         <name>getFields</name>
-                        <returnType>List</returnType>
-                        <modifier>+</modifier>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
                     </method>
                     <method>
                         <name>getMethods</name>
@@ -377,18 +425,13 @@
                     </method>
                     <method>
                         <name>getRelations</name>
-                        <returnType>List</returnType>
-                        <modifier>+</modifier>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
                     </method>
                     <method>
                         <name>getRelations</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
-                        <name>getExtendedClass</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
+                        <returnType>List</returnType>
+                        <modifier>+</modifier>
                     </method>
                     <method>
                         <name>getExtendedClass</name>
@@ -396,34 +439,14 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>getComposedClasses</name>
-                        <returnType>List</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>getComposedClasses</name>
+                        <name>getExtendedClass</name>
                         <returnType>void</returnType>
                         <modifier>-</modifier>
                     </method>
                     <method>
-                        <name>setSimpleName</name>
-                        <returnType>void</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>setExtendedClass</name>
-                        <returnType>void</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>setRelations</name>
-                        <returnType>void</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>setComposedClasses</name>
-                        <returnType>void</returnType>
-                        <modifier>+</modifier>
+                        <name>lambda$0</name>
+                        <returnType>boolean</returnType>
+                        <modifier>-</modifier>
                     </method>
                     <method>
                         <name>setFields</name>
@@ -432,26 +455,6 @@
                     </method>
                     <method>
                         <name>setMethods</name>
-                        <returnType>void</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>getImplementedInterfaces</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
-                        <name>getAggregatedClasses</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
-                        <name>getAggregatedClasses</name>
-                        <returnType>List</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>setImplemetedInterfaces</name>
                         <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
@@ -465,11 +468,84 @@
                         <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
+                    <method>
+                        <name>getImplementedInterfaces</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>getAggregatedClasses</name>
+                        <returnType>List</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getAggregatedClasses</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>setImplemetedInterfaces</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setComposedClasses</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getComposedClasses</name>
+                        <returnType>List</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getComposedClasses</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>getUsedClasses</name>
+                        <returnType>List</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getUsedClasses</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>relationExists</name>
+                        <returnType>boolean</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>setRelations</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setSimpleName</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>isCustomType</name>
+                        <returnType>boolean</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>setExtendedClass</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.models.EnumInfo</name>
-                <relationships/>
+                <name>EnumInfo</name>
+                <relationships>
+                    <uses from="EnumInfo" to="List"/>
+                    <aggregation from="EnumInfo" maxOccurs="*" to="String"/>
+                </relationships>
                 <fields>
                     <field>
                         <name>name</name>
@@ -483,7 +559,7 @@
                     </field>
                     <field>
                         <name>fields</name>
-                        <type>java.util.List</type>
+                        <type>java.lang.String</type>
                         <modifier>-</modifier>
                     </field>
                 </fields>
@@ -509,19 +585,19 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>setSimpleName</name>
+                        <name>setFields</name>
                         <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>setFields</name>
+                        <name>setSimpleName</name>
                         <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.models.FieldInfo</name>
+                <name>FieldInfo</name>
                 <relationships/>
                 <fields>
                     <field>
@@ -554,6 +630,11 @@
                         <type>boolean</type>
                         <modifier>-</modifier>
                     </field>
+                    <field>
+                        <name>isList</name>
+                        <type>boolean</type>
+                        <modifier>-</modifier>
+                    </field>
                 </fields>
                 <methods>
                     <method>
@@ -582,23 +663,8 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>setModifier</name>
-                        <returnType>void</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>isCustomType</name>
-                        <returnType>boolean</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
                         <name>getModifier</name>
                         <returnType>char</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>setCustomType</name>
-                        <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
@@ -607,7 +673,7 @@
                         <modifier>-</modifier>
                     </method>
                     <method>
-                        <name>setSimpleTypeName</name>
+                        <name>setModifier</name>
                         <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
@@ -617,15 +683,39 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
+                        <name>isList</name>
+                        <returnType>boolean</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
                         <name>setField</name>
                         <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setCustomType</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setSimpleTypeName</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>isCustomType</name>
+                        <returnType>boolean</returnType>
                         <modifier>+</modifier>
                     </method>
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.models.InterfaceInfo</name>
-                <relationships/>
+                <name>InterfaceInfo</name>
+                <relationships>
+                    <uses from="InterfaceInfo" to="List"/>
+                    <aggregation from="InterfaceInfo" maxOccurs="*" to="FieldInfo"/>
+                    <aggregation from="InterfaceInfo" maxOccurs="*" to="MethodInfo"/>
+                </relationships>
                 <fields>
                     <field>
                         <name>simpleName</name>
@@ -649,12 +739,12 @@
                     </field>
                     <field>
                         <name>fields</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.FieldInfo</type>
                         <modifier>-</modifier>
                     </field>
                     <field>
                         <name>methods</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.MethodInfo</type>
                         <modifier>-</modifier>
                     </field>
                 </fields>
@@ -717,7 +807,7 @@
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.models.MethodInfo</name>
+                <name>MethodInfo</name>
                 <relationships/>
                 <fields>
                     <field>
@@ -763,8 +853,8 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>setModifier</name>
-                        <returnType>void</returnType>
+                        <name>getModifier</name>
+                        <returnType>char</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
@@ -773,14 +863,14 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>getModifier</name>
-                        <returnType>char</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
                         <name>decodeModifier</name>
                         <returnType>char</returnType>
                         <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>setModifier</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
                     </method>
                     <method>
                         <name>getParams</name>
@@ -795,8 +885,15 @@
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.models.PackageInfo</name>
-                <relationships/>
+                <name>PackageInfo</name>
+                <relationships>
+                    <uses from="PackageInfo" to="List"/>
+                    <aggregation from="PackageInfo" maxOccurs="*" to="PackageInfo"/>
+                    <aggregation from="PackageInfo" maxOccurs="*" to="ClassInfo"/>
+                    <aggregation from="PackageInfo" maxOccurs="*" to="InterfaceInfo"/>
+                    <aggregation from="PackageInfo" maxOccurs="*" to="AnnotationInfo"/>
+                    <aggregation from="PackageInfo" maxOccurs="*" to="EnumInfo"/>
+                </relationships>
                 <fields>
                     <field>
                         <name>name</name>
@@ -805,27 +902,27 @@
                     </field>
                     <field>
                         <name>subPackages</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.PackageInfo</type>
                         <modifier>-</modifier>
                     </field>
                     <field>
                         <name>classes</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.ClassInfo</type>
                         <modifier>-</modifier>
                     </field>
                     <field>
                         <name>interfaces</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.InterfaceInfo</type>
                         <modifier>-</modifier>
                     </field>
                     <field>
                         <name>annotations</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.AnnotationInfo</type>
                         <modifier>-</modifier>
                     </field>
                     <field>
                         <name>enums</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.EnumInfo</type>
                         <modifier>-</modifier>
                     </field>
                 </fields>
@@ -861,11 +958,6 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>setInterfaces</name>
-                        <returnType>void</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
                         <name>getSubPackages</name>
                         <returnType>List</returnType>
                         <modifier>+</modifier>
@@ -876,7 +968,17 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
+                        <name>setInterfaces</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
                         <name>setSubPackages</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setClasses</name>
                         <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
@@ -890,19 +992,19 @@
                         <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
-                    <method>
-                        <name>setClasses</name>
-                        <returnType>void</returnType>
-                        <modifier>+</modifier>
-                    </method>
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.models.RelationshipInfo</name>
+                <name>RelationshipInfo</name>
                 <relationships/>
                 <fields>
                     <field>
                         <name>from</name>
+                        <type>java.lang.String</type>
+                        <modifier>-</modifier>
+                    </field>
+                    <field>
+                        <name>simpleFrom</name>
                         <type>java.lang.String</type>
                         <modifier>-</modifier>
                     </field>
@@ -912,7 +1014,22 @@
                         <modifier>-</modifier>
                     </field>
                     <field>
+                        <name>simpleTo</name>
+                        <type>java.lang.String</type>
+                        <modifier>-</modifier>
+                    </field>
+                    <field>
                         <name>relation</name>
+                        <type>java.lang.String</type>
+                        <modifier>-</modifier>
+                    </field>
+                    <field>
+                        <name>minOccurs</name>
+                        <type>java.lang.String</type>
+                        <modifier>-</modifier>
+                    </field>
+                    <field>
+                        <name>maxOccurs</name>
                         <type>java.lang.String</type>
                         <modifier>-</modifier>
                     </field>
@@ -924,8 +1041,8 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>setRelation</name>
-                        <returnType>void</returnType>
+                        <name>getTo</name>
+                        <returnType>String</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
@@ -934,8 +1051,48 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>getTo</name>
+                        <name>setRelation</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getMaxOccurs</name>
                         <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setSimpleFrom</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setMaxOccurs</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getSimpleFrom</name>
+                        <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setMinOccurs</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getMinOccurs</name>
+                        <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>getSimpleTo</name>
+                        <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>setSimpleTo</name>
+                        <returnType>void</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
@@ -953,9 +1110,14 @@
         </package>
         <package name="ui">
             <class>
-                <name>org.mql.java.ui.DiagramPanel</name>
+                <name>DiagramPanel</name>
                 <relationships>
                     <parent>javax.swing.JPanel</parent>
+                    <uses from="DiagramPanel" to="Graphics"/>
+                    <uses from="DiagramPanel" to="Graphics2D"/>
+                    <uses from="DiagramPanel" to="List"/>
+                    <uses from="DiagramPanel" to="Point"/>
+                    <aggregation from="DiagramPanel" maxOccurs="*" to="ClassInfo"/>
                 </relationships>
                 <fields>
                     <field>
@@ -965,7 +1127,7 @@
                     </field>
                     <field>
                         <name>classes</name>
-                        <type>java.util.List</type>
+                        <type>org.mql.java.models.ClassInfo</type>
                         <modifier>-</modifier>
                     </field>
                     <field>
@@ -986,18 +1148,33 @@
                         <modifier>-</modifier>
                     </method>
                     <method>
-                        <name>drawRelationLine</name>
+                        <name>drawDiamond</name>
                         <returnType>void</returnType>
                         <modifier>-</modifier>
                     </method>
                     <method>
-                        <name>drawDiamond</name>
+                        <name>drawHollowArrow</name>
                         <returnType>void</returnType>
                         <modifier>-</modifier>
                     </method>
                     <method>
                         <name>drawRelationships</name>
                         <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>drawDashedLine</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>drawRelationLine</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>calculateConnectionPoint</name>
+                        <returnType>Point</returnType>
                         <modifier>-</modifier>
                     </method>
                     <method>
@@ -1020,8 +1197,13 @@
         </package>
         <package name="utils">
             <class>
-                <name>org.mql.java.utils.PackageScanner</name>
-                <relationships/>
+                <name>PackageScanner</name>
+                <relationships>
+                    <uses from="PackageScanner" to="List"/>
+                    <uses from="PackageScanner" to="PackageInfo"/>
+                    <uses from="PackageScanner" to="Map"/>
+                    <uses from="PackageScanner" to="File"/>
+                </relationships>
                 <fields>
                     <field>
                         <name>packageName</name>
@@ -1033,11 +1215,6 @@
                     <method>
                         <name>getClasses</name>
                         <returnType>List</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>mapClassesToPackages</name>
-                        <returnType>Map</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
@@ -1056,14 +1233,9 @@
                         <modifier>-</modifier>
                     </method>
                     <method>
-                        <name>classType</name>
-                        <returnType>String</returnType>
+                        <name>mapClassesToPackages</name>
+                        <returnType>Map</returnType>
                         <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>scanDirectoryRecursively</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
                     </method>
                     <method>
                         <name>mapDirectoryRecursively</name>
@@ -1075,11 +1247,31 @@
                         <returnType>List</returnType>
                         <modifier>+</modifier>
                     </method>
+                    <method>
+                        <name>scanDirectoryRecursively</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>classType</name>
+                        <returnType>String</returnType>
+                        <modifier>+</modifier>
+                    </method>
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.utils.XMLGenerator</name>
-                <relationships/>
+                <name>XMLGenerator</name>
+                <relationships>
+                    <uses from="XMLGenerator" to="PackageInfo"/>
+                    <uses from="XMLGenerator" to="Document"/>
+                    <uses from="XMLGenerator" to="AnnotationInfo"/>
+                    <uses from="XMLGenerator" to="Element"/>
+                    <uses from="XMLGenerator" to="ClassInfo"/>
+                    <uses from="XMLGenerator" to="InterfaceInfo"/>
+                    <uses from="XMLGenerator" to="EnumInfo"/>
+                    <uses from="XMLGenerator" to="MethodInfo"/>
+                    <uses from="XMLGenerator" to="FieldInfo"/>
+                </relationships>
                 <fields/>
                 <methods>
                     <method>
@@ -1088,49 +1280,9 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>createClassXML</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
-                        <name>saveXMLToFile</name>
-                        <returnType>void</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>createPackageXML</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
-                        <name>createInterfaceXML</name>
-                        <returnType>void</returnType>
-                        <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>createEnumXML</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
-                        <name>createFieldXML</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
-                        <name>createMethodXML</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
-                    </method>
-                    <method>
                         <name>printXML</name>
                         <returnType>void</returnType>
                         <modifier>+</modifier>
-                    </method>
-                    <method>
-                        <name>createImplementedInterfaceXML</name>
-                        <returnType>void</returnType>
-                        <modifier>-</modifier>
                     </method>
                     <method>
                         <name>createAnnotationXML</name>
@@ -1142,12 +1294,54 @@
                         <returnType>void</returnType>
                         <modifier>-</modifier>
                     </method>
+                    <method>
+                        <name>createImplementedInterfaceXML</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>createPackageXML</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>createEnumXML</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>createClassXML</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>createMethodXML</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
+                    <method>
+                        <name>saveXMLToFile</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>createInterfaceXML</name>
+                        <returnType>void</returnType>
+                        <modifier>+</modifier>
+                    </method>
+                    <method>
+                        <name>createFieldXML</name>
+                        <returnType>void</returnType>
+                        <modifier>-</modifier>
+                    </method>
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.utils.XMLNode</name>
+                <name>XMLNode</name>
                 <relationships>
-                    <aggregation from="org.mql.java.utils.XMLNode" to="org.w3c.dom.Node"/>
+                    <uses from="XMLNode" to="XMLNode"/>
+                    <uses from="XMLNode" to="List"/>
+                    <aggregation from="XMLNode" maxOccurs="1" to="Node"/>
                 </relationships>
                 <fields>
                     <field>
@@ -1183,21 +1377,23 @@
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>firstChild</name>
-                        <returnType>XMLNode</returnType>
+                        <name>getIntAttribute</name>
+                        <returnType>int</returnType>
                         <modifier>+</modifier>
                     </method>
                     <method>
-                        <name>getIntAttribute</name>
-                        <returnType>int</returnType>
+                        <name>firstChild</name>
+                        <returnType>XMLNode</returnType>
                         <modifier>+</modifier>
                     </method>
                 </methods>
             </class>
             <class>
-                <name>org.mql.java.utils.XMLParser</name>
+                <name>XMLParser</name>
                 <relationships>
-                    <aggregation from="org.mql.java.utils.XMLParser" to="org.mql.java.utils.XMLNode"/>
+                    <uses from="XMLParser" to="PackageInfo"/>
+                    <uses from="XMLParser" to="ClassInfo"/>
+                    <aggregation from="XMLParser" maxOccurs="1" to="XMLNode"/>
                 </relationships>
                 <fields>
                     <field>
@@ -1226,4 +1422,4 @@
             </class>
         </package>
     </package>
-</package>
+</project>

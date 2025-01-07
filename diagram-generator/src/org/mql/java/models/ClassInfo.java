@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mql.java.annotations.Relation;
+import org.mql.java.examples.Alien;
 
 public class ClassInfo {
 	private String simpleName;
@@ -16,6 +17,7 @@ public class ClassInfo {
 	private List<FieldInfo> fields;
 	private List<MethodInfo> methods;
 	private List<RelationshipInfo> relations;
+	private List<RelationshipInfo> usedClasses;
 	private List<RelationshipInfo> composedClasses; 
     private List<RelationshipInfo> aggregatedClasses;
     private List<InterfaceInfo> implemetedInterfaces;
@@ -34,6 +36,7 @@ public class ClassInfo {
 			getFields(cls);	
 			getMethods(cls);
 			getRelations(fields);
+			getUsedClasses(cls);
 			getComposedClasses(fields);
             getAggregatedClasses(fields);
             getImplementedInterfaces(cls); 
@@ -76,17 +79,37 @@ public class ClassInfo {
 		
 		// I'll handle the inheritance relation here.
 	    if (extendedClass != null) {
-	        relations.add(new RelationshipInfo(name, extendedClass, new Relation() {
-	            @Override
-	            public Class<? extends java.lang.annotation.Annotation> annotationType() {
-	                return Relation.class;
-	            }
+	        relations.add(new RelationshipInfo(name, extendedClass, "Inheritance"));
+	    }
+	}
+	
+	private void getUsedClasses(Class<?> cls) {
+	    usedClasses = new ArrayList<>();
+	    List<String> fieldTypes = new ArrayList<>();
+	    
+	    for (FieldInfo field : fields) {
+	        fieldTypes.add(field.getType());
+	    }
 
-	            @Override
-	            public String value() {
-	                return "Inheritance";
+	    for (Method method : cls.getDeclaredMethods()) {
+	        for (Class<?> paramType : method.getParameterTypes()) {
+	            if (isCustomType(paramType) && !fieldTypes.contains(paramType.getName()) && !relationExists(paramType.getName())) {
+	                RelationshipInfo relation = new RelationshipInfo(cls.getName(), paramType.getName(), "Use");
+	                if (!usedClasses.contains(relation)) {
+	                    usedClasses.add(relation);
+	                    relations.add(relation);
+	                }
 	            }
-	        }));
+	        }
+
+	        Class<?> returnType = method.getReturnType();
+	        if (isCustomType(returnType) && !fieldTypes.contains(returnType.getName()) && !relationExists(returnType.getName())) {
+	            RelationshipInfo relation = new RelationshipInfo(cls.getName(), returnType.getName(), "Use");
+	            if (!usedClasses.contains(relation)) {
+	                usedClasses.add(relation);
+	                relations.add(relation);
+	            }
+	        }
 	    }
 	}
 	
@@ -97,17 +120,9 @@ public class ClassInfo {
             if (field.isCustomType() && Modifier.isFinal(field.getField().getModifiers())) {
                 String from = this.name;
                 String to = field.getType();
-                RelationshipInfo relation = new RelationshipInfo(from, to, new Relation() {
-    	            @Override
-    	            public Class<? extends java.lang.annotation.Annotation> annotationType() {
-    	                return Relation.class;
-    	            }
-
-    	            @Override
-    	            public String value() {
-    	                return "Composition";
-    	            }
-                });
+                RelationshipInfo relation = new RelationshipInfo(from, to, "Composition");
+                if (field.isList()) relation.setMaxOccurs("*");
+                else relation.setMaxOccurs("1");
                 composedClasses.add(relation);
                 relations.add(relation);
             }
@@ -120,17 +135,9 @@ public class ClassInfo {
             if (field.isCustomType() && !Modifier.isFinal(field.getField().getModifiers())) {
                 String from = this.name;
                 String to = field.getType();
-                RelationshipInfo relation = new RelationshipInfo(from, to, new Relation() {
-    	            @Override
-    	            public Class<? extends java.lang.annotation.Annotation> annotationType() {
-    	                return Relation.class;
-    	            }
-
-    	            @Override
-    	            public String value() {
-    	                return "Aggregation";
-    	            }
-                });
+                RelationshipInfo relation = new RelationshipInfo(from, to, "Aggregation");
+                if (field.isList()) relation.setMaxOccurs("*");
+                else relation.setMaxOccurs("1");
                 aggregatedClasses.add(relation);
                 relations.add(relation);
             }
@@ -141,7 +148,18 @@ public class ClassInfo {
 	    implemetedInterfaces = new ArrayList<>();
 	    for (Class<?> iface : cls.getInterfaces()) {
 	        implemetedInterfaces.add(new InterfaceInfo(iface));
+	        RelationshipInfo relation = new RelationshipInfo(this.name, iface.getName(), "Implementation");
+            relations.add(relation);
 	    }
+	}
+	
+	private boolean relationExists(String to) {
+		return usedClasses.stream()
+			.anyMatch(relation -> relation.getTo().equals(to));
+	}
+	
+	private boolean isCustomType(Class<?> cls) {
+	    return !cls.isPrimitive() && !cls.getName().startsWith("java.lang");
 	}
 
 
@@ -173,6 +191,10 @@ public class ClassInfo {
 		return relations;
 	}
 
+	public List<RelationshipInfo> getUsedClasses() {
+		return usedClasses;
+	}
+	
 	public List<RelationshipInfo> getComposedClasses() {
 		return composedClasses;
 	}
