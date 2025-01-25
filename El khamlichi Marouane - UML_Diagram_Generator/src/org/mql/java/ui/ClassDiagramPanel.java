@@ -138,7 +138,7 @@ public class ClassDiagramPanel extends JPanel {
             for (RelationshipInfo rel : cls.getRelations()) {
                 Point from = classLocations.get(rel.getFrom());
                 Point to = classLocations.get(rel.getTo());
-                if (from != null && to != null) {
+                if (from != null && to != null && !rel.getFrom().equals(rel.getTo())) {
                     drawRelationLine(g2, from, to, rel.getRelation());
                 }
             }
